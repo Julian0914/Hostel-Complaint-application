@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { io } from "socket.io-client";
+import { SOCKET_URL } from "../config";
 
 export function useSocket(userId, onNotification) {
   const socketRef = useRef(null);
@@ -9,7 +10,7 @@ export function useSocket(userId, onNotification) {
       return undefined;
     }
 
-    socketRef.current = io("http://localhost:5000");
+    socketRef.current = io(SOCKET_URL);
     socketRef.current.emit("join", userId);
 
     ["new_assignment", "status_update", "complaint_resolved", "new_complaint"].forEach(

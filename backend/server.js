@@ -12,6 +12,19 @@ const studentRoutes = require("./routes/student");
 const adminRoutes = require("./routes/admin");
 const staffRoutes = require("./routes/staff");
 
+const allowedOrigins = (process.env.CLIENT_URL || "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+const isAllowedOrigin = (origin) => {
+  if (!origin || allowedOrigins.length === 0) {
+    return true;
+  }
+
+  return allowedOrigins.includes(origin);
+};
+
 connectDB();
 
 const app = express();
@@ -19,14 +32,26 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_URL,
+    origin: (origin, callback) => {
+      if (isAllowedOrigin(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("CORS origin blocked"));
+    },
     credentials: true,
   },
 });
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: (origin, callback) => {
+      if (isAllowedOrigin(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("CORS origin blocked"));
+    },
     credentials: true,
   })
 );

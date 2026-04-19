@@ -280,3 +280,55 @@ You can replace the placeholders below with real screenshots after taking them f
 - Add validation and stronger error handling
 - Add automated tests
 - Deploy frontend and backend
+
+## Deploy on Render
+
+This repository now includes a root-level `render.yaml` blueprint for:
+
+- a Node web service for the backend API
+- a static site for the React frontend
+
+### Services created by the blueprint
+
+- `hostel-complaint-api`
+- `hostel-complaint-web`
+
+### Required environment variables
+
+Backend service:
+
+- `MONGO_URI`
+- `CLIENT_URL`
+- `JWT_SECRET` is generated automatically by the blueprint
+- `JWT_EXPIRE` defaults to `7d`
+
+Frontend static site:
+
+- `REACT_APP_API_URL`
+
+### Recommended deployment flow
+
+1. Push the latest code to GitHub
+2. In Render, choose `New +` -> `Blueprint`
+3. Select this GitHub repository
+4. Render will detect `render.yaml`
+5. During setup, provide:
+   - `MONGO_URI`
+   - `CLIENT_URL`
+   - `REACT_APP_API_URL`
+
+### Example Render values
+
+After Render creates your services, use values like:
+
+- `CLIENT_URL=https://hostel-complaint-web.onrender.com`
+- `REACT_APP_API_URL=https://hostel-complaint-api.onrender.com/api`
+
+### MongoDB options
+
+You can deploy with either:
+
+- `MongoDB Atlas`
+- your own MongoDB instance on Render
+
+For the simplest setup, MongoDB Atlas is usually easier.

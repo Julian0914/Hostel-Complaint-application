@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-
-const API = "http://localhost:5000/api";
+import { API_URL } from "../config";
 
 export const AuthContext = createContext(null);
 
@@ -30,7 +29,7 @@ export function AuthProvider({ children }) {
   };
 
   const login = async (email, password) => {
-    const response = await fetch(`${API}/auth/login`, {
+    const response = await fetch(`${API_URL}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -45,7 +44,7 @@ export function AuthProvider({ children }) {
   };
 
   const register = async (formData) => {
-    const response = await fetch(`${API}/auth/register`, {
+    const response = await fetch(`${API_URL}/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),
@@ -67,7 +66,7 @@ export function AuthProvider({ children }) {
   };
 
   const authFetch = async (url, options = {}) => {
-    const response = await fetch(`${API}${url}`, {
+    const response = await fetch(`${API_URL}${url}`, {
       ...options,
       headers: {
         "Content-Type": "application/json",
